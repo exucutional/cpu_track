@@ -116,7 +116,6 @@ ssize_t code_asm (char *text, uint8_t **code_p)
 		ip_begin = *code_p;
 		while(*text != '\0')
 		{
-			printf("\n%s\n", text);
 			if (*text == ':')
 			{
 				get_label(&text, code_p);
