@@ -1,13 +1,29 @@
 #include <stdio.h>
-#icnlude "cpu_t.h"
+#include <assert.h>
+#include <stdlib.h>
+#include "cpu_t.h"
 
-unit_test()
+int unit_test()
 {
-	// nop, syscall
-	uint8_t code = "\x00\x01";
+	char *buf = calloc(1000, sizeof(uint8_t));
+	
+	// nop
+	// syscall (rax == 0 => sys_exit)
+	buf[0] = CMD_nop;
+	buf[1] = CMD_syscall;
+	
 	char *text;
-	cpu_dasm(code, &text);
-	printf("%s\n", text);
+	//code_dasm(buf, &text, 20);
+	//printf("%s\n", text);
+
+	struct cpu_t cpu = {};
+	cpu.reg[REG_rax] = SYSCALL_EXIT;	// 0
+	cpu.reg[REG_rsp] = (uint64_t) (buf + 100);
+
+	cpu_set_rip(&cpu, buf);
+	cpu_set_mem(&cpu, buf, buf + 900);
+	int tmp = cpu_run(&cpu);
+	assert(tmp == 0);
 	return 0;
 }
 

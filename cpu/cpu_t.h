@@ -7,11 +7,9 @@
 #ifndef _CPU_T_H_
 #define _CPU_T_H_
 
+#include <stddef.h>
 #include <stdint.h>
-#include "stack_t.h"
-#include <string.h>
-
-#define LABEL_MAX 1024
+#define LABEL_MAX 1024 // asm only
 
 enum CMD_CODES
 {
@@ -31,35 +29,44 @@ enum REG_CODES
 
 enum TRAP_CODES
 {
-	TRAP_NO_TRAP,
+	TRAP_NO_TRAP = 0,
 	TRAP_EXIT,
 	TRAP_SYSCALL,
-	TRAP_WRONG_SYSCALL,
-	TRAP_MEMORY_FAIL,
+	TRAP_ERROR_MEMORY,
+	TRAP_ERROR_INSTR,
+	TRAP_ERROR_SYSCALL,
 };
 
 enum SYSCALL_CODES
 {
 	SYSCALL_EXIT,
-	SYSCALL_INPQ,
+	SYSCALL_OUTQ,
 };
 
 struct label_t
 {
 	size_t offs;
 	int isdefined;
-}lbl[LABEL_MAX];
+}lbl[LABEL_MAX];		/////////////// <- Remove it from header				
 
 struct cpu_t
 {
-	uint64_t *rip;
+	/// Memory includes rip, rsp
+	void *mem_min;
+	void *mem_max;
+	void *rip;
 	uint64_t reg[REG_MAX];
-	struct stack cpu_stk;
 	uint64_t trap;
 };
 
-ssize_t code_asm (char    *text, uint8_t **code_p);
-ssize_t code_dasm(uint8_t *code, char **text_p, ssize_t size);
+int cpu_init(struct cpu_t *cpu);
+int cpu_set_rip(struct cpu_t *cpu, void *code);
+int cpu_set_rsp(struct cpu_t *cpu, void *rsp);
+int cpu_set_mem(struct cpu_t *cpu, void *mem_min, void *mem_max);
+int cpu_run (struct cpu_t *cpu);
+
+long code_asm (char    *text, uint8_t **code_p);
+long code_dasm(uint8_t *code, char **text_p, long size);
 
 int get_cmd(char **text_p, uint8_t **code_p);
 int get_reg(char **text_p, uint8_t **code_p);
@@ -70,10 +77,6 @@ int put_cmd(char **text_p, uint8_t **code_p);
 int put_reg(char **text_p, uint8_t **code_p);
 int put_num(char **text_p, uint8_t **code_p);
 int put_label(char **text_p, uint8_t **code_p);
-
-int	cpu_init(struct cpu_t *cpu);
-int	cpu_load(struct cpu_t *cpu, uint8_t *code);
-int	cpu_exec(struct cpu_t *cpu);
 
 
 #endif // _CPU_T_H_

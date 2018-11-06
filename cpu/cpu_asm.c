@@ -6,6 +6,8 @@
 
 #include "cpu_t.h"
 #include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define SKIP_SPACE	\
 {	\
