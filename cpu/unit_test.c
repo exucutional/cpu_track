@@ -1,34 +1,21 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <time.h>
 #include "cpu_t.h"
 
-int unit_test()
+
+int unit_test(struct cpu_t *cpu, uint8_t **code_t)
 {
-	char *buf = calloc(1000, sizeof(uint8_t));
-	
-	// nop
-	// syscall (rax == 0 => sys_exit)
-	buf[0] = CMD_nop;
-	buf[1] = CMD_syscall;
-	
-	char *text;
-	//code_dasm(buf, &text, 20);
-	//printf("%s\n", text);
-
-	struct cpu_t cpu = {};
-	cpu.reg[REG_rax] = SYSCALL_EXIT;	// 0
-	cpu.reg[REG_rsp] = (uint64_t) (buf + 100);
-
-	cpu_set_rip(&cpu, buf);
-	cpu_set_mem(&cpu, buf, buf + 900);
-	int tmp = cpu_run(&cpu);
-	assert(tmp == 0);
-	return 0;
-}
-
-int main()
-{
-	unit_test();
+	int res = 0;
+	for (int i = 0; i < 100; i++)
+	{
+		cpu_init(cpu, code_t);
+		res += cpu_run(cpu);
+	}
+	printf("\n---------------------------------\nFrequency cmd exec : %lf\n"
+			"---------------------------------\n", (double)clock() / res);
 	return 0;
 }

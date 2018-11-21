@@ -10,17 +10,22 @@
  */
 
 
-DEF_CMD(nop, 1)
-DEF_CMD(syscall, 1)
-// DEF_CMD(pushmr, 1)
-DEF_CMD(pushq, 3)
-// DEF_CMD(pushr, 2)
-// DEF_CMD(pushm, 1)
-// DEF_CMD(popmr, 1)
-// DEF_CMD(popr, 2)
-// DEF_CMD(popm, 1)
-// DEF_CMD(add, 1)
-// DEF_CMD(sub, 1)
-// DEF_CMD(mul, 1)
-// DEF_CMD(div, 1)
-// DEF_CMD(jmp, 4)
+DEF_CMD(nop, 1) //0
+DEF_CMD(syscall, 1) //1
+DEF_CMD(pushmr, 2) //2
+DEF_CMD(pushq, 3) //3
+DEF_CMD(pushr, 2) //4
+DEF_CMD(pushm, 3) //5
+DEF_CMD(popmr, 2) //6
+DEF_CMD(popr, 2) //7
+DEF_CMD(popm, 3) //8
+DEF_CMD(add, 1) //9
+DEF_CMD(sub, 1) //10
+DEF_CMD(mul, 1) //11
+DEF_CMD(div, 1) //12
+DEF_CMD(jmp, 4) //13
+DEF_CMD(call, 4) //14
+DEF_CMD(ret, 1) //15
+DEF_CMD(movrr, 2) //16
+DEF_CMD(jg, 4) //17
+DEF_CMD(jl, 4) //18

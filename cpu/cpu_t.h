@@ -7,9 +7,10 @@
 #ifndef _CPU_T_H_
 #define _CPU_T_H_
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <stddef.h>
 #include <stdint.h>
-#define LABEL_MAX 1024 // asm only
 
 enum CMD_CODES
 {
@@ -41,13 +42,14 @@ enum SYSCALL_CODES
 {
 	SYSCALL_EXIT,
 	SYSCALL_OUTQ,
+	SYSCALL_INPQ,
 };
 
 struct label_t
 {
 	size_t offs;
 	int isdefined;
-}lbl[LABEL_MAX];		/////////////// <- Remove it from header				
+};
 
 struct cpu_t
 {
@@ -59,13 +61,14 @@ struct cpu_t
 	uint64_t trap;
 };
 
-int cpu_init(struct cpu_t *cpu);
+int cpu_init(struct cpu_t *cpu, uint8_t **code_p);
 int cpu_set_rip(struct cpu_t *cpu, void *code);
 int cpu_set_rsp(struct cpu_t *cpu, void *rsp);
+int cpu_set_rsmp(struct cpu_t *cpu, void *rsp);
 int cpu_set_mem(struct cpu_t *cpu, void *mem_min, void *mem_max);
 int cpu_run (struct cpu_t *cpu);
 
-long code_asm (char    *text, uint8_t **code_p);
+long code_asm (char  *text, uint8_t **code_p);
 long code_dasm(uint8_t *code, char **text_p, long size);
 
 int get_cmd(char **text_p, uint8_t **code_p);

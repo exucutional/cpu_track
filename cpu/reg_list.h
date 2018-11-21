@@ -5,11 +5,11 @@
  * \brief Format : DEF_REG(name)
  */
 
-DEF_REG(rax)
-DEF_REG(rcx)
-DEF_REG(rdx)
-DEF_REG(rbx)
-DEF_REG(rsp)
-DEF_REG(rbp)
-DEF_REG(rsi)
-DEF_REG(rdi)
+DEF_REG(rax) //0
+DEF_REG(rcx) //1
+DEF_REG(rdx) //2
+DEF_REG(rbx) //3
+DEF_REG(rsp) //4
+DEF_REG(rbp) //5
+DEF_REG(rsi) //6
+DEF_REG(rdi) //7

@@ -7,8 +7,6 @@
 #include "cpu_t.h"
 #include <ctype.h>
 #include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 int put_cmd(char **text_p, uint8_t **code)
 {
@@ -63,10 +61,10 @@ int put_num(char **text_p, uint8_t **code_p)
 }
 
 //doesn't work with labels
-long code_dasm(uint8_t *code, char **text_p, long size)
+long code_dasm(uint8_t *code, char **text_p, ssize_t size)
 {
 	uint8_t exp = 1;
-	for (long i = 0; i < size; i++)
+	for (ssize_t i = 0; i < size; i++)
 	{
 		switch (exp)
 		{
