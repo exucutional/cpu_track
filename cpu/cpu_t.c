@@ -142,9 +142,7 @@ int cpu_syscall(struct cpu_t *cpu)
 		cpu->trap = TRAP_NO_TRAP;
 		break;
 	case SYSCALL_INPQ:
-		tmp = cpu_pop(cpu);
-		cpu->reg[REG_rax] = tmp;
-		cpu_push(cpu, tmp);
+		scanf("%lu", &(cpu->reg[REG_rax]));
 		cpu->trap = TRAP_NO_TRAP;
 		break;
 	default:
@@ -155,9 +153,9 @@ int cpu_syscall(struct cpu_t *cpu)
 	return 0;
 }
 
-int cpu_run(struct cpu_t *cpu)
+long cpu_run(struct cpu_t *cpu)
 {
-	int cpu_cmd_count = 0;
+	long cpu_cmd_count = 0;
 	while (1) {
 		// Handle cpu-traps
 		switch (cpu->trap) {
@@ -179,13 +177,13 @@ int cpu_run(struct cpu_t *cpu)
 
 		#ifdef NDEBUG
 		#define DEF_CMD(name, type)			\
-		case CMD_##name:				\
+		case CMD_##name:					\
 			cpu_cmd_##name(cpu);			\
-			cpu_cmd_count++;	\
+			cpu_cmd_count++;				\
 			break;
 		#else
 		#define DEF_CMD(name, type)			\
-		case CMD_##name:				\
+		case CMD_##name:					\
 			fprintf(stderr, "Exec: " #name "\n");	\
 			cpu_cmd_##name(cpu);			\
 			break;

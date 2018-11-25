@@ -5,6 +5,7 @@
  */
 
 #include "cpu_t.h"
+#include "time.h"
 #include <assert.h>
 
 const size_t MEMORY_SIZE = 4096;
@@ -29,10 +30,14 @@ int main(int argc, char* argv[])
 	struct cpu_t cpu = {};
 	cpu_init(&cpu, &code);
 
+
 	fprintf(stderr, "----Running----\n");
-	int tmp = cpu_run(&cpu);
-	//assert(tmp == 0);
-	unit_test(&cpu, &code);
+	clock_t exec_time = clock();
+	long tmp = cpu_run(&cpu);
+	exec_time = clock() - exec_time;
+	printf("done:\n ncmds: %ld\n time: %lg\n freq: %lg MHz",
+		   tmp, (double) exec_time / CLOCKS_PER_SEC, ((double) tmp )
+		   / exec_time * CLOCKS_PER_SEC / 1000000);
 
 	return 0;
 }

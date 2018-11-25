@@ -40,9 +40,9 @@ enum TRAP_CODES
 
 enum SYSCALL_CODES
 {
-	SYSCALL_EXIT,
-	SYSCALL_OUTQ,
-	SYSCALL_INPQ,
+	SYSCALL_EXIT = 0,
+	SYSCALL_OUTQ = 1,
+	SYSCALL_INPQ = 2,
 };
 
 struct label_t
@@ -66,7 +66,7 @@ int cpu_set_rip(struct cpu_t *cpu, void *code);
 int cpu_set_rsp(struct cpu_t *cpu, void *rsp);
 int cpu_set_rsmp(struct cpu_t *cpu, void *rsp);
 int cpu_set_mem(struct cpu_t *cpu, void *mem_min, void *mem_max);
-int cpu_run (struct cpu_t *cpu);
+long cpu_run (struct cpu_t *cpu);
 
 long code_asm (char  *text, uint8_t **code_p);
 long code_dasm(uint8_t *code, char **text_p, long size);
